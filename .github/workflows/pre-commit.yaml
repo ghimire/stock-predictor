@@ -1,0 +1,40 @@
+name: Pre-Commit
+
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    name: Pre-Commit
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Check pre_commit config file exists
+        run: |
+          pre_commit_file=".pre-commit-config.yaml"
+          if [ ! -f "$pre_commit_file" ]; then
+            echo "::warning::File $pre_commit_file not found. Terminating the action...."
+            exit 1
+          fi
+
+      - run: python -m pip install pre-commit
+
+      - run: python -m pip freeze --local
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/pre-commit
+          key: pre-commit|${{ env.pythonLocation }}|${{ hashFiles('.pre-commit-config.yaml') }}
+
+      - run: pre-commit validate-config .pre-commit-config.yaml
+
+      - run: pre-commit run --show-diff-on-failure --color=always --all-files
