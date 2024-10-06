@@ -80,6 +80,20 @@ You can run the stock predictor with various options:
 
 Replace NVDA, MSFT, GOOGL with the desired stock tickers and adjust the dates as needed.
 
+## Prediction Methodology
+
+The stock price predictions are made using a machine learning model trained with historical stock data. The following technical indicators are used to enhance the prediction accuracy:
+
+- **Simple Moving Averages (SMA):** SMA_5, SMA_20, and SMA_50 are calculated to identify trends over different time frames.
+- **Exponential Moving Averages (EMA):** EMA_12 and EMA_26 are used to give more weight to recent prices, helping to identify short-term trends.
+- **Moving Average Convergence Divergence (MACD):** This indicator is used to identify potential buy and sell signals.
+- **Relative Strength Index (RSI):** RSI is used to measure the speed and change of price movements, indicating overbought or oversold conditions.
+- **Bollinger Bands:** These are used to measure market volatility and identify potential overbought or oversold conditions.
+- **Percentage Changes:** Daily percentage changes in Open, High, Low, Close, and Volume are calculated to capture daily price movements.
+- **Volatility:** The standard deviation of closing prices over a 20-day window is used to measure volatility.
+
+The model is trained using XGBoost, a powerful gradient boosting algorithm, and is evaluated using time series cross-validation to ensure robustness.
+
 ## Troubleshooting
 
 If you encounter any issues:
